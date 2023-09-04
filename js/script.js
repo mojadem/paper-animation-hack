@@ -5,17 +5,16 @@ var path = new Path({
   fillColor: "black",
 });
 var mousePos = view.center / 2;
-var pathHeight = mousePos.y;
 initializePath();
 
 function initializePath() {
   center = view.center;
   width = view.size.width;
-  height = view.size.height / 2;
+  height = (3 * view.size.height) / 4;
   path.segments = [];
   path.add(view.bounds.bottomLeft);
   for (var i = 1; i < points; i++) {
-    var point = new Point((width / points) * i, center.y);
+    var point = new Point((width / points) * i, height);
     path.add(point);
   }
   path.add(view.bounds.bottomRight);
@@ -23,10 +22,11 @@ function initializePath() {
 }
 
 function onFrame(event) {
-  pathHeight += (center.y - mousePos.y - pathHeight) / 10;
   for (var i = 1; i < points; i++) {
     var sinSeed = event.count + (i + (i % 10)) * 100;
-    var sinHeight = Math.sin(sinSeed / 200) * pathHeight;
+    var xDist = Math.abs((width / points) * i - mousePos.x);
+    var thisHeight = Math.pow(1 - xDist / width, 2) * height;
+    var sinHeight = Math.sin(sinSeed / 200) * thisHeight;
     var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
     path.segments[i].point.y = yPos;
   }
