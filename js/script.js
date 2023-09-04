@@ -25,7 +25,7 @@ function onFrame(event) {
   for (var i = 1; i < points; i++) {
     var sinSeed = event.count + (i + (i % 10)) * 100;
     var xDist = Math.abs((width / points) * i - mousePos.x);
-    var thisHeight = Math.pow(1 - xDist / width, 2) * height;
+    var thisHeight = Math.pow(1 - xDist / width, 2) * (height - mousePos.y);
     var sinHeight = Math.sin(sinSeed / 200) * thisHeight;
     var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
     path.segments[i].point.y = yPos;
